@@ -2,7 +2,8 @@ package repository
 
 import (
 	"context"
-	"github.com/paytabs/cmd/model"
+
+	"github.com/paytabs/bank/model"
 )
 
 type (
@@ -11,7 +12,7 @@ type (
 	transferRepo struct{}
 )
 
-func NewTransferRepository(params TransferRepositoryParams) TransferRepository {
+func NewTransferRepository(_ TransferRepositoryParams) TransferRepository {
 
 	return &transferRepo{}
 }
