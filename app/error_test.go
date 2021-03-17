@@ -27,24 +27,10 @@ func TestError(t *testing.T) {
 			},
 		},
 		{
-			"NotFoundError",
-			args{
-				input:    NotFoundError,
-				httpCode: 404,
-			},
-		},
-		{
 			"InternalServerError",
 			args{
 				input:    InternalServerError,
 				httpCode: 500,
-			},
-		},
-		{
-			"ForbiddenError",
-			args{
-				input:    ForbiddenError,
-				httpCode: 403,
 			},
 		},
 	}

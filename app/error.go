@@ -14,27 +14,11 @@ func BadError(code, message string) *Error {
 	}
 }
 
-func NotFoundError(code, message string) *Error {
-	return &Error{
-		code:     code,
-		message:  message,
-		httpCode: 404,
-	}
-}
-
 func InternalServerError(code, message string) *Error {
 	return &Error{
 		code:     code,
 		message:  message,
 		httpCode: 500,
-	}
-}
-
-func ForbiddenError(code, message string) *Error {
-	return &Error{
-		code:     code,
-		message:  message,
-		httpCode: 403,
 	}
 }
 

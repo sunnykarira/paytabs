@@ -7,8 +7,6 @@ import (
 	"net/http"
 	"net/http/httptest"
 	"testing"
-
-	"github.com/stretchr/testify/assert"
 )
 
 func TestNewHttpServer(t *testing.T) {
@@ -52,32 +50,8 @@ func TestRouteHandler(t *testing.T) {
 		serverMethod func(string, HttpHandler)
 	}{
 		{
-			method:       "GET",
-			serverMethod: server.GET,
-		},
-		{
 			method:       "POST",
 			serverMethod: server.POST,
-		},
-		{
-			method:       "PUT",
-			serverMethod: server.PUT,
-		},
-		{
-			method:       "OPTIONS",
-			serverMethod: server.OPTIONS,
-		},
-		{
-			method:       "PATCH",
-			serverMethod: server.PATCH,
-		},
-		{
-			method:       "HEAD",
-			serverMethod: server.HEAD,
-		},
-		{
-			method:       "DELETE",
-			serverMethod: server.DELETE,
 		},
 	}
 
@@ -125,64 +99,6 @@ func TestRouteHandler(t *testing.T) {
 
 }
 
-func TestRouteHandlerForResponseHeaders(t *testing.T) {
-	app := App{}
-	server := NewHttpServer(app)
-
-	key := "Test"
-	value := fmt.Sprintf("VALUE_%d", rand.Int())
-	successBody := fmt.Sprintf("Success_%d", rand.Int())
-	successHandler := func(ctx *Context, r *http.Request, p HttpParams) (HttpResponseBody, error) {
-		ctx.ResponseHeaders[key] = value
-		return []byte(successBody), nil
-	}
-
-	server.GET("/test", successHandler)
-
-	req, _ := http.NewRequest("GET", "/test", nil)
-	rr := httptest.NewRecorder()
-	server.router.ServeHTTP(rr, req)
-
-	if rr.Header().Get(key) != value {
-		t.Errorf("Header not set for http server")
-	}
-
-}
-
-func TestRouteHandlerForMiddlewares(t *testing.T) {
-	app := App{}
-	server := NewHttpServer(app)
-
-	key := "Test"
-	value := fmt.Sprintf("VALUE_%d", rand.Int())
-
-	server.AddMiddleware(
-		func(m []HttpMiddleware, ctx *Context, r *http.Request, p HttpParams) (HttpResponseBody, error) {
-			ctx.ResponseHeaders[key] = value
-			return m[0](m[1:], ctx, r, p)
-		},
-	)
-
-	successBody := fmt.Sprintf("Success_%d", rand.Int())
-	var handlerName string
-	successHandler := func(ctx *Context, r *http.Request, p HttpParams) (HttpResponseBody, error) {
-		handlerName = ctx.GetHandlerName()
-		return []byte(successBody), nil
-	}
-
-	server.GET("/test", successHandler)
-
-	req, _ := http.NewRequest("GET", "/test", nil)
-	rr := httptest.NewRecorder()
-	server.router.ServeHTTP(rr, req)
-
-	assert.NotNil(t, handlerName)
-
-	if rr.Header().Get(key) != value {
-		t.Errorf("Header not set for http server; means middleware is not called")
-	}
-
-}
 
 func TestServeHTTP(t *testing.T) {
 	app := App{}
@@ -193,9 +109,9 @@ func TestServeHTTP(t *testing.T) {
 		return []byte(successBody), nil
 	}
 
-	server.GET("/test", successHandler)
+	server.POST("/test", successHandler)
 
-	req, _ := http.NewRequest("GET", "/test", nil)
+	req, _ := http.NewRequest("POST", "/test", nil)
 	rr := httptest.NewRecorder()
 	server.ServeHTTP(rr, req)
 

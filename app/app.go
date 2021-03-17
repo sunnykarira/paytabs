@@ -19,17 +19,3 @@ func NewApp() App {
 		Hostname: host,
 	}
 }
-
-func (a *App) SetData(key string, value interface{}) {
-	a.externals = make(map[string]interface{})
-	a.externals[key] = value
-}
-
-func (a *App) GetData(key string) interface{} {
-
-	val, ok := a.externals[key]
-	if !ok {
-		return nil
-	}
-	return val
-}

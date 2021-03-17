@@ -50,41 +50,10 @@ func NewHttpServer(app App) *HttpServer {
 	}
 }
 
-func (s *HttpServer) GET(path string, httpHandler HttpHandler) {
-	routeHandler := routerHandler(path, httpHandler, s)
-	s.router.GET(path, routeHandler)
-}
-
 func (s *HttpServer) POST(path string, httpHandler HttpHandler) {
 	routeHandler := routerHandler(path, httpHandler, s)
 	s.router.POST(path, routeHandler)
 }
-
-func (s *HttpServer) PUT(path string, httpHandler HttpHandler) {
-	routeHandler := routerHandler(path, httpHandler, s)
-	s.router.PUT(path, routeHandler)
-}
-
-func (s *HttpServer) DELETE(path string, httpHandler HttpHandler) {
-	routeHandler := routerHandler(path, httpHandler, s)
-	s.router.DELETE(path, routeHandler)
-}
-
-func (s *HttpServer) OPTIONS(path string, httpHandler HttpHandler) {
-	routeHandler := routerHandler(path, httpHandler, s)
-	s.router.OPTIONS(path, routeHandler)
-}
-
-func (s *HttpServer) PATCH(path string, httpHandler HttpHandler) {
-	routeHandler := routerHandler(path, httpHandler, s)
-	s.router.PATCH(path, routeHandler)
-}
-
-func (s *HttpServer) HEAD(path string, httpHandler HttpHandler) {
-	routeHandler := routerHandler(path, httpHandler, s)
-	s.router.HEAD(path, routeHandler)
-}
-
 
 func (s *HttpServer) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 	s.router.ServeHTTP(w, req)
