@@ -1,25 +1,22 @@
 package main
 
 import (
-	"context"
 	"github.com/paytabs/app"
+	"github.com/paytabs/bank"
 )
 
 func main() {
 
-	flgs := ParseFlags()
-
-	ctx := context.Background()
 	application := app.NewApp()
 
 	server := app.NewHttpServer(application)
 
-	InitServices(ctx, server)
+	InitService(server)
 
 }
 
+func InitService(server *app.HttpServer) {
 
-func InitServices(ctx context.Context, server *app.HttpServer) {
-
+	bank.InitBank(server)
 
 }

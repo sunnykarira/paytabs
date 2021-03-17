@@ -11,15 +11,15 @@ import (
 type (
 	AccountDetails struct {
 		data model.Account
-		mu   *sync.Mutex
+		mu   *sync.RWMutex
 	}
 
 	AccountsRepositoryParams struct {
-		AccountsData map[int64]AccountDetails
+		AccountsData map[int64]*AccountDetails
 	}
 
 	accountsRepo struct {
-		accountsData map[int64]AccountDetails
+		accountsData map[int64]*AccountDetails
 	}
 )
 
@@ -31,25 +31,13 @@ func NewAccountRepository(params AccountsRepositoryParams) AccountsRepository {
 }
 
 var (
-	ERR_INVALID_ACCOUNT_ID     = errors.New("invalid account id")
-	ERR_ACCOUNT_DOES_NOT_EXIST = errors.New("account does not exist")
-	ERR_ACCOUNT_ALREADY_EXIST  = errors.New("account already exist")
-	ERR_INVALID_MONEY_TO_ADD   = errors.New("invalid money to add")
+	ERR_INVALID_ACCOUNT_ID            = errors.New("invalid account id")
+	ERR_ACCOUNT_DOES_NOT_EXIST        = errors.New("account does not exist")
+	ERR_ACCOUNT_ALREADY_EXIST         = errors.New("account already exist")
+	ERR_INVALID_MONEY_TO_ADD          = errors.New("invalid money to add")
+	ERR_REQUEST_FAILED_DUE_TO_TIMEOUT = errors.New("failed due to timeout")
 )
 
-func (a *accountsRepo) FetchData(ctx context.Context, accountID int64) (accountDetails model.Account, err error) {
-
-	if accountID <= 0 {
-		return model.Account{}, ERR_INVALID_ACCOUNT_ID
-	}
-
-	v, ok := a.accountsData[accountID]
-	if !ok {
-		return model.Account{}, ERR_ACCOUNT_DOES_NOT_EXIST
-	}
-	return v.data, nil
-
-}
 
 func (a *accountsRepo) CreateAccount(ctx context.Context, accountData model.Account) (success bool, err error) {
 
@@ -61,9 +49,14 @@ func (a *accountsRepo) CreateAccount(ctx context.Context, accountData model.Acco
 		return false, ERR_ACCOUNT_ALREADY_EXIST
 	}
 
-	a.accountsData[accountData.ID] = AccountDetails{
+	a.accountsData[accountData.ID] = &AccountDetails{
 		data: accountData,
-		mu:   &sync.Mutex{},
+		mu:   &sync.RWMutex{},
+	}
+	select {
+	case <-ctx.Done():
+		return false, ERR_REQUEST_FAILED_DUE_TO_TIMEOUT
+	default:
 	}
 	return true, nil
 }
@@ -78,12 +71,16 @@ func (a *accountsRepo) AddMoney(ctx context.Context, accountID int64, money floa
 	}
 
 	v, ok := a.accountsData[accountID]
-	if !ok {
+	if !ok || v == nil {
 		return false, ERR_ACCOUNT_DOES_NOT_EXIST
 	}
 	v.mu.Lock()
 	defer v.mu.Unlock()
 	v.data.Balance += money
-	a.accountsData[accountID] = v
-	return false, nil
+	select {
+	case <-ctx.Done():
+		return false, ERR_REQUEST_FAILED_DUE_TO_TIMEOUT
+	default:
+	}
+	return true, nil
 }
