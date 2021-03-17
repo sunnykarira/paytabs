@@ -2,6 +2,7 @@ package bank
 
 import (
 	"github.com/paytabs/app"
+	"github.com/paytabs/bank/delivery"
 	bankRepositories "github.com/paytabs/bank/repository"
 	"github.com/paytabs/bank/usecase"
 )
@@ -19,6 +20,6 @@ func InitBank(app *app.HttpServer) {
 		DataRepository:     dataRepository,
 	})
 
-	delivery.NewDelivery(u, app)
+	delivery.NewHTTPDelivery(u, app)
 
 }

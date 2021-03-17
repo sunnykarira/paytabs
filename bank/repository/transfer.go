@@ -39,6 +39,11 @@ func (t *transferRepo) SendMoney(ctx context.Context, txnData model.TransactionD
 	defer s.mu.Unlock()
 	d.mu.Lock()
 	defer d.mu.Unlock()
+	select {
+	case <-ctx.Done():
+		return false, ERR_REQUEST_FAILED_DUE_TO_TIMEOUT
+	default:
+	}
 	s.data.Balance -= txnData.Amount
 	d.data.Balance += txnData.Amount
 	return true, nil

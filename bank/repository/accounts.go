@@ -36,8 +36,8 @@ var (
 	ERR_ACCOUNT_ALREADY_EXIST         = errors.New("account already exist")
 	ERR_INVALID_MONEY_TO_ADD          = errors.New("invalid money to add")
 	ERR_REQUEST_FAILED_DUE_TO_TIMEOUT = errors.New("failed due to timeout")
+	ERR_ACCOUNT_BLOCKED               = errors.New("account blocked")
 )
-
 
 func (a *accountsRepo) CreateAccount(ctx context.Context, accountData model.Account) (success bool, err error) {
 
@@ -74,13 +74,19 @@ func (a *accountsRepo) AddMoney(ctx context.Context, accountID int64, money floa
 	if !ok || v == nil {
 		return false, ERR_ACCOUNT_DOES_NOT_EXIST
 	}
+
+	if v.data.AccountStatus == model.AccountStatusBlocked {
+		return false, ERR_ACCOUNT_BLOCKED
+	}
+
 	v.mu.Lock()
 	defer v.mu.Unlock()
-	v.data.Balance += money
 	select {
 	case <-ctx.Done():
 		return false, ERR_REQUEST_FAILED_DUE_TO_TIMEOUT
 	default:
 	}
+
+	v.data.Balance += money
 	return true, nil
 }
