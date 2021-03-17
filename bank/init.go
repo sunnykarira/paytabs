@@ -1,10 +1,14 @@
 package bank
 
 import (
+	"context"
+	"log"
+
 	"github.com/paytabs/app"
 	"github.com/paytabs/bank/delivery"
 	bankRepositories "github.com/paytabs/bank/repository"
 	"github.com/paytabs/bank/usecase"
+	"gopkg.in/paytm/grace.v1"
 )
 
 func InitBank(app *app.HttpServer) {
@@ -21,5 +25,7 @@ func InitBank(app *app.HttpServer) {
 	})
 
 	delivery.NewHTTPDelivery(u, app)
+
+	log.Println(context.Background(), grace.Serve("localhost:8080", app))
 
 }
