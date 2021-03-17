@@ -8,9 +8,8 @@ const (
 )
 
 type Account struct {
-	ID            int64
-	Balance       float64
-	Location      string
-	AccountStatus AccountStatus
+	ID            int64         `json:"id"`
+	Balance       float64       `json:"balance"`
+	Location      string        `json:"location"`
+	AccountStatus AccountStatus `json:"account_status"`
 }
-

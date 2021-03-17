@@ -34,13 +34,15 @@ func (u *usecase) SendMoney(ctx context.Context, txnData model.TransactionData) 
 		destErr error
 	)
 
-	var wg *sync.WaitGroup
+	wg := &sync.WaitGroup{}
 	wg.Add(2)
 	go func() {
+		defer wg.Done()
 		srcData, srcErr = u.dataRepo.FetchData(ctx, txnData.SourceAccountID)
 	}()
 
 	go func() {
+		defer wg.Done()
 		destData, destErr = u.dataRepo.FetchData(ctx, txnData.DestinationAccountID)
 	}()
 	wg.Wait()
@@ -53,11 +55,11 @@ func (u *usecase) SendMoney(ctx context.Context, txnData model.TransactionData) 
 	}
 
 	if srcData.AccountStatus == model.AccountStatusBlocked {
-		return false, errors.New("account blocked " + strconv.FormatInt(txnData.SourceAccountID, 10))
+		return false, errors.New("accountID " + strconv.FormatInt(txnData.SourceAccountID, 10) + " blocked")
 	}
 
 	if destData.AccountStatus == model.AccountStatusBlocked {
-		return false, errors.New("account blocked " + strconv.FormatInt(txnData.DestinationAccountID, 10))
+		return false, errors.New("accountID " + strconv.FormatInt(txnData.DestinationAccountID, 10) + " blocked ")
 	}
 
 	if srcData.Balance-txnData.Amount < 0 {

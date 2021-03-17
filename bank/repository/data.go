@@ -32,7 +32,7 @@ func (a *dataRepo) FetchData(ctx context.Context, accountID int64) (accountDetai
 
 	v, ok := a.accountsData[accountID]
 	if !ok || v == nil {
-		return model.Account{}, errors.New("account does not exist " + strconv.FormatInt(accountID, 10))
+		return model.Account{}, errors.New("account does not exist account id" + strconv.FormatInt(accountID, 10))
 	}
 	v.mu.RLock()
 	defer v.mu.RUnlock()

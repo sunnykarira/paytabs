@@ -44,7 +44,7 @@ func (b *bankTransferDelivery) FetchAccountDetails(ctx *app.Context, request *ht
 
 	resp, err := b.useCase.FetchData(newCtx, fetchRequest.ID)
 	if err != nil {
-		return []byte(""), err
+		return []byte(""), app.BadError("", err.Error())
 	}
 	return json.Marshal(resp)
 }
@@ -54,7 +54,7 @@ func (b *bankTransferDelivery) CreateAccount(ctx *app.Context, request *http.Req
 	var err error
 
 	err = json.NewDecoder(request.Body).Decode(&fetchRequest)
-	if err != nil || fetchRequest.ID <= 0 || fetchRequest.Balance <= 0 || fetchRequest.Location == "" || (model.AccountStatus(fetchRequest.AccountStatus) != model.AccountStatusBlocked && model.AccountStatus(fetchRequest.AccountStatus) != model.AccountStatusActive) {
+	if err != nil || fetchRequest.ID <= 0 || fetchRequest.Balance < 0 || fetchRequest.Location == "" || (model.AccountStatus(fetchRequest.AccountStatus) != model.AccountStatusBlocked && model.AccountStatus(fetchRequest.AccountStatus) != model.AccountStatusActive) {
 		return []byte(""), app.BadError("BANK_101", "Invalid or Incomplete payload data")
 	}
 	newCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
@@ -67,9 +67,13 @@ func (b *bankTransferDelivery) CreateAccount(ctx *app.Context, request *http.Req
 		AccountStatus: model.AccountStatus(fetchRequest.AccountStatus),
 	})
 	if err != nil {
-		return []byte(""), err
+		return []byte(""), app.BadError("", err.Error())
 	}
-	return json.Marshal(resp)
+	if resp{
+
+		return json.Marshal(app.RespMessage("", "account created successfully"))
+	}
+	return json.Marshal(app.RespMessage("", "unable to create account"))
 }
 
 func (b *bankTransferDelivery) AddMoney(ctx *app.Context, request *http.Request, params app.HttpParams) (app.HttpResponseBody, error) {
@@ -86,9 +90,13 @@ func (b *bankTransferDelivery) AddMoney(ctx *app.Context, request *http.Request,
 
 	resp, err := b.useCase.AddMoney(newCtx, fetchRequest.ID, fetchRequest.Amount)
 	if err != nil {
-		return []byte(""), err
+		return []byte(""), app.BadError("", err.Error())
 	}
-	return json.Marshal(resp)
+	if resp{
+
+		return json.Marshal(app.RespMessage("", "added money successfully"))
+	}
+	return json.Marshal(app.RespMessage("", "unable to add money"))
 }
 
 func (b *bankTransferDelivery) SendMoney(ctx *app.Context, request *http.Request, params app.HttpParams) (app.HttpResponseBody, error) {
@@ -109,7 +117,11 @@ func (b *bankTransferDelivery) SendMoney(ctx *app.Context, request *http.Request
 		Amount:               fetchRequest.Amount,
 	})
 	if err != nil {
-		return []byte(""), err
+		return []byte(""), app.BadError("", err.Error())
 	}
-	return json.Marshal(resp)
+	if resp{
+
+		return json.Marshal(app.RespMessage("", "sent money successfully"))
+	}
+	return json.Marshal(app.RespMessage("", "unable to send money"))
 }
