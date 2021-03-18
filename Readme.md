@@ -52,15 +52,14 @@ The sample script for internal curl is embedded on the server itself. So, it wil
 ```json
 {
     "code": "",
-    "message": "account created successfully",
-    "http_code": 200
+    "message": "account created successfully"
 }
 ```
 
 
 -----
 
-> Fetch Account Details
+> Fetch Account Details Request
 ```curl
 curl --location --request POST 'localhost:8080/api/v1/fetch' \
 --header 'Content-Type: application/json' \
@@ -103,8 +102,7 @@ curl --location --request POST 'localhost:8080/api/v1/send' \
 ```json
 {
     "code": "",
-    "message": "sent money successfully",
-    "http_code": 200
+    "message": "sent money successfully"
 }
 ```
 
@@ -128,8 +126,7 @@ curl --location --request POST 'localhost:8080/api/v1/add' \
 ```json
 {
     "code": "",
-    "message": "added money successfully",
-    "http_code": 200
+    "message": "added money successfully"
 }
 ```
 
