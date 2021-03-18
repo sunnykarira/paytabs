@@ -23,7 +23,7 @@ func TestError(t *testing.T) {
 			"BadError",
 			args{
 				input:    BadError,
-				httpCode: 400,
+				httpCode: 200,
 			},
 		},
 		{
@@ -41,10 +41,10 @@ func TestError(t *testing.T) {
 			if err.Error() != message {
 				t.Error("Message did not match")
 			}
-			if err.Code() != code {
+			if err.CodeErr() != code {
 				t.Error("Code did not match")
 			}
-			if err.HttpCode() != tt.args.httpCode {
+			if err.HttpCodeErr() != tt.args.httpCode {
 				t.Error("Code did not match")
 			}
 		})

@@ -70,9 +70,9 @@ func ErrorHandler(err error) (HttpResponseBody, int) {
 			"Something went wrong, please try after sometime")
 	}
 
-	responseBody := "{\"code\":\"" + appErr.Code() + "\",\"message\":\"" +
+	responseBody := "{\"code\":\"" + appErr.CodeErr() + "\",\"message\":\"" +
 		appErr.Error() + "\"}"
-	return []byte(responseBody), appErr.HttpCode()
+	return []byte(responseBody), appErr.HttpCodeErr()
 }
 
 /////////////////////////////////////////////////////////////////////////////

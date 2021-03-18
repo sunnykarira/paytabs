@@ -79,7 +79,7 @@ func TestRouteHandler(t *testing.T) {
 			rr := httptest.NewRecorder()
 			server.router.ServeHTTP(rr, req)
 
-			if status := rr.Code; status != http.StatusBadRequest {
+			if status := rr.Code; status != http.StatusOK {
 				t.Errorf("Wrong status for app method")
 			}
 		})

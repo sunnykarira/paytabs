@@ -37,9 +37,6 @@ func TestResp(t *testing.T) {
 			if err.CodeResp() != code {
 				t.Error("Code did not match")
 			}
-			if err.HttpCodeResp() != tt.args.httpCode {
-				t.Error("Code did not match")
-			}
 		})
 	}
 

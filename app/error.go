@@ -1,35 +1,35 @@
 package app
 
 type Error struct {
-	code     string `json:"code"`
-	message  string `json:"message"`
-	httpCode int    `json:"http_code"`
+	Code     string `json:"code"`
+	Message  string `json:"message"`
+	HttpCode int    `json:"http_code"`
 }
 
 func BadError(code, message string) *Error {
 	return &Error{
-		code:     code,
-		message:  message,
-		httpCode: 200,
+		Code:     code,
+		Message:  message,
+		HttpCode: 200,
 	}
 }
 
 func InternalServerError(code, message string) *Error {
 	return &Error{
-		code:     code,
-		message:  message,
-		httpCode: 500,
+		Code:     code,
+		Message:  message,
+		HttpCode: 500,
 	}
 }
 
 func (err *Error) Error() string {
-	return err.message
+	return err.Message
 }
 
-func (err *Error) Code() string {
-	return err.code
+func (err *Error) CodeErr() string {
+	return err.Code
 }
 
-func (err *Error) HttpCode() int {
-	return err.httpCode
+func (err *Error) HttpCodeErr() int {
+	return err.HttpCode
 }
