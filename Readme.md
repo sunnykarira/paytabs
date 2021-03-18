@@ -12,6 +12,7 @@ A small application to simulate money transfer one account to another.
 
 
 ## Run the application
+> Application built on version go version go1.14.4 darwin/amd64
 ```sh
 go mod vendor
 go build
