@@ -58,6 +58,7 @@ func RunCURLScript() {
 	if err != nil {
 		log.Fatalln(err)
 	}
+	v = app.Resp{}
 	json.NewDecoder(resp.Body).Decode(&v)
 	log.Printf("%+v\n", v)
 
@@ -100,6 +101,7 @@ func RunCURLScript() {
 		log.Fatalln(err)
 	}
 
+	fetch =  model.Account{}
 	json.NewDecoder(resp.Body).Decode(&fetch)
 	log.Printf("%+v\n", fetch)
 
@@ -123,6 +125,7 @@ func RunCURLScript() {
 		log.Fatalln(err)
 	}
 
+	v = app.Resp{}
 	json.NewDecoder(resp.Body).Decode(&v)
 	log.Printf("%+v\n", v)
 
@@ -146,6 +149,7 @@ func RunCURLScript() {
 		log.Fatalln(err)
 	}
 
+	v = app.Resp{}
 	json.NewDecoder(resp.Body).Decode(&v)
 	log.Printf("%+v\n", v)
 
@@ -169,6 +173,7 @@ func RunCURLScript() {
 		log.Fatalln(err)
 	}
 
+	v = app.Resp{}
 	json.NewDecoder(resp.Body).Decode(&v)
 	log.Printf("%+v\n", v)
 
@@ -191,6 +196,7 @@ func RunCURLScript() {
 	if err != nil {
 		log.Fatalln(err)
 	}
+	v = app.Resp{}
 	json.NewDecoder(resp.Body).Decode(&v)
 	log.Printf("%+v\n", v)
 

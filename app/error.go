@@ -10,7 +10,7 @@ func BadError(code, message string) *Error {
 	return &Error{
 		code:     code,
 		message:  message,
-		httpCode: 400,
+		httpCode: 200,
 	}
 }
 
