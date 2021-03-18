@@ -25,6 +25,10 @@ func (u *usecase) AddMoney(ctx context.Context, accountID int64, money float64) 
 
 func (u *usecase) SendMoney(ctx context.Context, txnData model.TransactionData) (success bool, err error) {
 
+	if txnData.SourceAccountID == txnData.DestinationAccountID {
+		return false, errors.New("cannot send money to same account")
+	}
+
 	var (
 		srcData  model.Account
 		destData model.Account
@@ -33,7 +37,6 @@ func (u *usecase) SendMoney(ctx context.Context, txnData model.TransactionData) 
 		srcErr  error
 		destErr error
 	)
-
 	wg := &sync.WaitGroup{}
 	wg.Add(2)
 	go func() {
