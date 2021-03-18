@@ -3,12 +3,11 @@ package main
 import (
 	"bytes"
 	"encoding/json"
+	"io/ioutil"
 	"log"
 	"net/http"
 
-	"github.com/paytabs/app"
 	"github.com/paytabs/bank/delivery"
-	"github.com/paytabs/bank/model"
 )
 
 func RunCURLScript() {
@@ -34,9 +33,8 @@ func RunCURLScript() {
 	if err != nil {
 		log.Fatalln(err)
 	}
-	var v app.Resp
-	json.NewDecoder(resp.Body).Decode(&v)
-	log.Printf("%+v\n", v)
+	b, _ := ioutil.ReadAll(resp.Body)
+	log.Printf("%+v\n", string(b))
 
 	log.Println("Create account with ID 11 Balance 20 Location test AccountStatus Active")
 
@@ -58,9 +56,8 @@ func RunCURLScript() {
 	if err != nil {
 		log.Fatalln(err)
 	}
-	v = app.Resp{}
-	json.NewDecoder(resp.Body).Decode(&v)
-	log.Printf("%+v\n", v)
+	b, _ = ioutil.ReadAll(resp.Body)
+	log.Printf("%+v\n", string(b))
 
 	log.Println("Fetch Account details for ID 10")
 
@@ -79,9 +76,8 @@ func RunCURLScript() {
 	if err != nil {
 		log.Fatalln(err)
 	}
-	var fetch model.Account
-	json.NewDecoder(resp.Body).Decode(&fetch)
-	log.Printf("%+v\n", fetch)
+	b, _ = ioutil.ReadAll(resp.Body)
+	log.Printf("%+v\n", string(b))
 
 	log.Println("Fetch Account details for ID 11")
 
@@ -101,9 +97,8 @@ func RunCURLScript() {
 		log.Fatalln(err)
 	}
 
-	fetch =  model.Account{}
-	json.NewDecoder(resp.Body).Decode(&fetch)
-	log.Printf("%+v\n", fetch)
+	b, _ = ioutil.ReadAll(resp.Body)
+	log.Printf("%+v\n", string(b))
 
 	log.Println("Send money from account ID 10 to account ID 11 with amount 2")
 
@@ -125,9 +120,8 @@ func RunCURLScript() {
 		log.Fatalln(err)
 	}
 
-	v = app.Resp{}
-	json.NewDecoder(resp.Body).Decode(&v)
-	log.Printf("%+v\n", v)
+	b, _ = ioutil.ReadAll(resp.Body)
+	log.Printf("%+v\n", string(b))
 
 	log.Println("Send big money from account ID 10 to account ID 11 with amount 11111")
 
@@ -149,9 +143,8 @@ func RunCURLScript() {
 		log.Fatalln(err)
 	}
 
-	v = app.Resp{}
-	json.NewDecoder(resp.Body).Decode(&v)
-	log.Printf("%+v\n", v)
+	b, _ = ioutil.ReadAll(resp.Body)
+	log.Printf("%+v\n", string(b))
 
 	log.Println("Send money from invalid account ID 99 to account ID 11 with amount 2")
 
@@ -173,9 +166,8 @@ func RunCURLScript() {
 		log.Fatalln(err)
 	}
 
-	v = app.Resp{}
-	json.NewDecoder(resp.Body).Decode(&v)
-	log.Printf("%+v\n", v)
+	b, _ = ioutil.ReadAll(resp.Body)
+	log.Printf("%+v\n", string(b))
 
 	log.Println("Send money from account ID 10 to invalid destination account ID 98 with amount 2")
 
@@ -196,8 +188,7 @@ func RunCURLScript() {
 	if err != nil {
 		log.Fatalln(err)
 	}
-	v = app.Resp{}
-	json.NewDecoder(resp.Body).Decode(&v)
-	log.Printf("%+v\n", v)
+	b, _ = ioutil.ReadAll(resp.Body)
+	log.Printf("%+v\n", string(b))
 
 }

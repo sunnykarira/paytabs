@@ -133,5 +133,5 @@ curl --location --request POST 'localhost:8080/api/v1/add' \
 -----
 ## All invalid cases respond with appropriate errors
 ```json
-{"code":"","message":"appropriate message"}
+{"code":"BANK_101_ERROR","message":"appropriate message"}
 ```
