@@ -13,3 +13,15 @@ func RespMessage(code, message string) *Resp {
 		HttpCode: 200,
 	}
 }
+
+func (r *Resp) MessageResp() string {
+	return r.Message
+}
+
+func (r *Resp) CodeResp() string {
+	return r.Code
+}
+
+func (r *Resp) HttpCodeResp() int {
+	return r.HttpCode
+}

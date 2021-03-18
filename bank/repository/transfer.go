@@ -12,25 +12,25 @@ type (
 	}
 
 	transferRepo struct {
-		AccountsData map[int64]*AccountDetails
+		accountsData map[int64]*AccountDetails
 	}
 )
 
 func NewTransferRepository(params TransferRepositoryParams) TransferRepository {
 
 	return &transferRepo{
-		AccountsData: params.AccountsData,
+		accountsData: params.AccountsData,
 	}
 }
 
 func (t *transferRepo) SendMoney(ctx context.Context, txnData model.TransactionData) (success bool, err error) {
 
-	s, ok := t.AccountsData[txnData.SourceAccountID]
+	s, ok := t.accountsData[txnData.SourceAccountID]
 	if !ok || s == nil {
 		return false, ERR_INVALID_ACCOUNT_ID
 	}
 
-	d, ok := t.AccountsData[txnData.DestinationAccountID]
+	d, ok := t.accountsData[txnData.DestinationAccountID]
 	if !ok || d == nil {
 		return false, ERR_INVALID_ACCOUNT_ID
 	}
