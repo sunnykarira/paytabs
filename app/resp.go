@@ -1,9 +1,9 @@
 package app
 
 type Resp struct {
-	Code     string
-	Message  string
-	HttpCode int
+	Code     string `json:"code"`
+	Message  string `json:"message"`
+	HttpCode int    `json:"http_code"`
 }
 
 func RespMessage(code, message string) *Resp {

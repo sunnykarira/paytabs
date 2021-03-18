@@ -1,9 +1,9 @@
 package app
 
 type Error struct {
-	code     string
-	message  string
-	httpCode int
+	code     string `json:"code"`
+	message  string `json:"message"`
+	httpCode int    `json:"http_code"`
 }
 
 func BadError(code, message string) *Error {
