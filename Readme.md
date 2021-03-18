@@ -136,4 +136,4 @@ curl --location --request POST 'localhost:8080/api/v1/add' \
 ```
 
 -----
-## All invalid cases with response with appropriate errors
+## All invalid cases respond with appropriate errors
