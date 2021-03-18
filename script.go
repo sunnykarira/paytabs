@@ -3,14 +3,13 @@ package main
 import (
 	"bytes"
 	"encoding/json"
-	"github.com/paytabs/app"
-	"github.com/paytabs/bank/model"
 	"log"
 	"net/http"
 
+	"github.com/paytabs/app"
 	"github.com/paytabs/bank/delivery"
+	"github.com/paytabs/bank/model"
 )
-
 
 func RunCURLScript() {
 
