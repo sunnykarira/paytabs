@@ -55,7 +55,7 @@ func (b *bankTransferDelivery) CreateAccount(ctx *app.Context, request *http.Req
 
 	err = json.NewDecoder(request.Body).Decode(&fetchRequest)
 	if err != nil || fetchRequest.ID <= 0 || fetchRequest.Balance < 0 || fetchRequest.Location == "" || (model.AccountStatus(fetchRequest.AccountStatus) != model.AccountStatusBlocked && model.AccountStatus(fetchRequest.AccountStatus) != model.AccountStatusActive) {
-		return []byte(""), app.BadError("BANK_101", "Invalid or Incomplete payload data")
+		return json.Marshal(app.BadError("BANK_101_ERROR", "Invalid or Incomplete payload data"))
 	}
 	newCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
