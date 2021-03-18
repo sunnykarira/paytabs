@@ -81,9 +81,6 @@ curl --location --request POST 'localhost:8080/api/v1/fetch' \
     "account_status": 1
 }
 
-OR
-
-{"code":"","message":"account does not exist account id 66"}
 ```
 
 -----
@@ -138,3 +135,6 @@ curl --location --request POST 'localhost:8080/api/v1/add' \
 
 -----
 ## All invalid cases respond with appropriate errors
+```json
+{"code":"","message":"appropriate message"}
+```
